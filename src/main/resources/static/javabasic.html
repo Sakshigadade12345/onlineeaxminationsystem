@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Java Basics Quiz</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Java Basics Quiz</h1>
+
+    <!-- ✅ Timer display -->
+    <div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center;">
+      Time Left: <span id="timeDisplay">1:00</span>
+    </div>
+
+    <!-- ✅ Message area -->
+    <div id="message" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;"></div>
+
+    <form class="quiz-form" id="javaQuizForm">
+      <!-- Questions (your original ones stay the same) -->
+        <div class="question-block">
+                <p>1. Which of the following is not a Java keyword?</p>
+                <label><input type="radio" name="q1" value="A"> class</label><br>
+                <label><input type="radio" name="q1" value="B"> interface</label><br>
+                <label><input type="radio" name="q1" value="C"> extends</label><br>
+                <label><input type="radio" name="q1" value="D"> implement</label>
+            </div>
+            <!-- Question 2 --> <div class="question-block"> 
+                <p>2. What is the size of int in Java?</p> 
+                <label><input type="radio" name="q2" value="A"> 2 bytes</label><br> 
+                <label><input type="radio" name="q2" value="B"> 4 bytes</label><br> 
+                <label><input type="radio" name="q2" value="C"> 8 bytes</label><br> 
+                <label><input type="radio" name="q2" value="D"> Depends on the system</label> 
+            </div>
+            <!-- Question 3 --> 
+             <div class="question-block"> 
+                <p>3. Which method is the entry point of a Java program?</p> 
+                <label><input type="radio" name="q3" value="A"> start()</label><br> 
+                <label><input type="radio" name="q3" value="B"> main()</label><br> 
+                <label><input type="radio" name="q3" value="C"> run()</label><br> 
+                <label><input type="radio" name="q3" value="D"> init()</label> 
+            </div>
+            <!-- Question 4 --> 
+             <div class="question-block"> 
+                <p>4. What is the default value of a boolean variable?</p> 
+                <label><input type="radio" name="q4" value="A"> true</label><br> 
+                <label><input type="radio" name="q4" value="B"> 0</label><br> 
+                <label><input type="radio" name="q4" value="C"> false</label><br> 
+                <label><input type="radio" name="q4" value="D"> null</label> 
+            </div>
+            <!-- Question 5 --> 
+             <div class="question-block"> 
+                <p>5. Which keyword is used to inherit a class in Java?</p> 
+                <label><input type="radio" name="q5" value="A"> this</label><br> 
+                <label><input type="radio" name="q5" value="B"> super</label><br> 
+                <label><input type="radio" name="q5" value="C"> extends</label><br> 
+                <label><input type="radio" name="q5" value="D"> implements</label> 
+            </div>
+            <!-- Question 6 --> 
+             <div class="question-block"> 
+                <p>6. Which of these is not a Java feature?</p> 
+                <label><input type="radio" name="q6" value="A"> Object-Oriented</label><br> 
+                <label><input type="radio" name="q6" value="B"> Use of pointers</label><br> 
+                <label><input type="radio" name="q6" value="C"> Platform Independent</label><br> 
+                <label><input type="radio" name="q6" value="D"> Automatic Garbage Collection</label> 
+            </div>
+            <!-- Question 7 --> 
+             <div class="question-block"> 
+                <p>7. Which of the following is a reserved keyword in Java?</p> 
+                <label><input type="radio" name="q7" value="A"> object</label><br> 
+                <label><input type="radio" name="q7" value="B"> strictfp</label><br> 
+                <label><input type="radio" name="q7" value="C"> system</label><br> 
+                <label><input type="radio" name="q7" value="D"> main</label> 
+            </div>
+            <!-- Question 8 --> 
+             <div class="question-block"> <p>8. Java code is compiled to:</p> 
+                <label><input type="radio" name="q8" value="A"> .exe file</label><br> 
+                <label><input type="radio" name="q8" value="B"> bytecode</label><br> 
+                <label><input type="radio" name="q8" value="C"> machine code</label><br> 
+                <label><input type="radio" name="q8" value="D"> source code</label> 
+            </div>
+            <!-- Question 9 --> 
+             <div class="question-block"> <p>9. Which of the following is the correct syntax to create an object in Java?</p> 
+                <label><input type="radio" name="q9" value="A"> Class obj = new Class();</label><br> 
+                <label><input type="radio" name="q9" value="B"> obj = Class();</label><br> 
+                <label><input type="radio" name="q9" value="C"> Class = new obj();</label><br> 
+                <label><input type="radio" name="q9" value="D"> Class obj = Class();</label> 
+            </div>
+          
+            <div class="question-block">
+                <p>10. What is the extension of Java bytecode files?</p>
+                <label><input type="radio" name="q10" value="A"> .java</label><br>
+                <label><input type="radio" name="q10" value="B"> .class</label><br>
+                <label><input type="radio" name="q10" value="C"> .exe</label><br>
+                <label><input type="radio" name="q10" value="D"> .byte</label>
+            </div>
+
+      <!-- ✅ Submit button -->
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <div class="nav-links">
+      <a href="dashboard.html">← Back to Dashboard</a>
+    </div>
+  </div>
+
+<script>
+  let userId = null;
+  const quizName = "Java Basics Quiz";
+  let remainingTime = 1 * 60; // 15 minutes in seconds
+  let timerInterval;
+
+  const correctAnswers = {
+    q1: "D", q2: "B", q3: "B", q4: "C", q5: "C",
+    q6: "B", q7: "B", q8: "B", q9: "A", q10: "B"
+  };
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch("/session-user");
+      if (res.ok) {
+        const user = await res.json();
+        userId = user.userId;
+
+        await loadProgress();
+        startTimer();
+
+        document.querySelectorAll('input[type="radio"]').forEach(input =>
+          input.addEventListener("change", saveProgress)
+        );
+      } else {
+        console.warn("⚠️ Failed to get session user.");
+      }
+    } catch (err) {
+      console.error("❌ Error getting user session:", err);
+    }
+  });
+
+  document.getElementById("javaQuizForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    await submitQuiz();
+  });
+
+  async function submitQuiz() {
+    clearInterval(timerInterval);
+    localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+    let score = 0;
+    for (let key in correctAnswers) {
+      const selected = document.querySelector(`input[name="${key}"]:checked`);
+      if (selected && selected.value === correctAnswers[key]) {
+        score++;
+      }
+    }
+     const totalQuestions = Object.keys(correctAnswers).length;
+  const passingScore = 6; // ✅ Set passing score here
+  const resultStatus = score >= passingScore ? "Pass" : "Fail"; // ✅ Determine status
+
+    const exam = {
+      userId: userId,
+      examTitle: quizName,
+      totalMarks: score,
+      completedAt: new Date().toISOString(),
+       result: resultStatus 
+    };
+
+    try {
+      const response = await fetch("/Exam", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(exam)
+      });
+
+      const totalQuestions = Object.keys(correctAnswers).length;
+
+      if (response.ok) {
+         const passMark = Math.ceil(totalQuestions * 0.4); // 40% pass mark
+      const resultStatus = score >= passMark ? "Pass" : "Fail";
+      const timeTaken = (1 * 60) - remainingTime;
+
+      window.location.href = `result.html?score=${score}&total=${totalQuestions}&result=${resultStatus}&time=${timeTaken}`;
+      } else {
+        alert("Failed to save exam.");
+      }
+    } catch (err) {
+      console.error("Error submitting exam:", err);
+      alert("Error occurred while submitting.");
+    }
+  }
+
+  function startTimer() {
+    loadSavedTime();
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+
+        // ✅ Show message instead of auto-submitting
+        const messageEl = document.getElementById("message");
+        if (messageEl) {
+          messageEl.textContent = "⏰ Time's up! Please submit your quiz.";
+        }
+
+        // ✅ Disable inputs and submit button if desired
+        document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+        document.getElementById("submitBtn").disabled = false; // still allow submit manually
+      } else {
+        remainingTime--;
+        updateTimerDisplay();
+        saveRemainingTime();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    document.getElementById("timeDisplay").textContent = 
+      `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  function saveRemainingTime() {
+    if (userId) {
+      localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+    }
+  }
+
+  function loadSavedTime() {
+    if (userId) {
+      const savedTime = localStorage.getItem(`timer_${userId}_${quizName}`);
+      if (savedTime !== null) {
+        remainingTime = parseInt(savedTime, 10);
+      } else {
+        remainingTime = 1 * 60;
+      }
+    }
+  }
+
+  async function saveProgress() {
+    if (!userId) return;
+
+    const answers = {};
+    for (let i = 1; i <= 10; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      if (selected) {
+        answers[`q${i}`] = selected.value;
+      }
+    }
+
+    try {
+      await fetch("/quiz-progress/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          quizName: quizName,
+          answersJson: JSON.stringify(answers)
+        })
+      });
+    } catch (err) {
+      console.error("❌ Error saving progress:", err);
+    }
+  }
+
+  async function loadProgress() {
+    if (!userId) return;
+
+    try {
+      const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.answersJson) {
+          const saved = JSON.parse(data.answersJson);
+          for (let key in saved) {
+            const value = saved[key];
+            const radio = document.querySelector(`input[name="${key}"][value="${value}"]`);
+            if (radio) radio.checked = true;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("❌ Error loading progress:", err);
+    }
+  }
+</script>
+</body>
+</html>

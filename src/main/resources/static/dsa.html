@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Quiz</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Data Structures & Algorithms Quiz</h1>
+        <div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #e74c3c; text-align: center;">
+    Time Left: <span id="timeDisplay">1:00</span>
+</div>
+<div id="message" style="text-align: center; color: red; font-weight: bold;"></div>
+
+        <form class="quiz-form" id="dsaQuizForm">
+            <div class="question-block">
+                <p>1. Which data structure uses LIFO (Last In First Out)?</p>
+                <label><input type="radio" name="q1" value="A"> Queue</label><br>
+                <label><input type="radio" name="q1" value="B"> Array</label><br>
+                <label><input type="radio" name="q1" value="C"> Stack</label><br>
+                <label><input type="radio" name="q1" value="D"> Linked List</label>
+            </div>
+
+            <div class="question-block">
+                <p>2. What is the time complexity of binary search in a sorted array?</p>
+                <label><input type="radio" name="q2" value="A"> O(n)</label><br>
+                <label><input type="radio" name="q2" value="B"> O(n log n)</label><br>
+                <label><input type="radio" name="q2" value="C"> O(log n)</label><br>
+                <label><input type="radio" name="q2" value="D"> O(1)</label>
+            </div>
+
+            <div class="question-block">
+                <p>3. Which of these is not a linear data structure?</p>
+                <label><input type="radio" name="q3" value="A"> Stack</label><br>
+                <label><input type="radio" name="q3" value="B"> Queue</label><br>
+                <label><input type="radio" name="q3" value="C"> Tree</label><br>
+                <label><input type="radio" name="q3" value="D"> Linked List</label>
+            </div>
+
+            <div class="question-block">
+                <p>4. Which sorting algorithm has the best average-case time complexity?</p>
+                <label><input type="radio" name="q4" value="A"> Bubble Sort</label><br>
+                <label><input type="radio" name="q4" value="B"> Quick Sort</label><br>
+                <label><input type="radio" name="q4" value="C"> Selection Sort</label><br>
+                <label><input type="radio" name="q4" value="D"> Insertion Sort</label>
+            </div>
+
+            <div class="question-block">
+                <p>5. What is the worst-case time complexity of Merge Sort?</p>
+                <label><input type="radio" name="q5" value="A"> O(n)</label><br>
+                <label><input type="radio" name="q5" value="B"> O(n log n)</label><br>
+                <label><input type="radio" name="q5" value="C"> O(n²)</label><br>
+                <label><input type="radio" name="q5" value="D"> O(log n)</label>
+            </div>
+
+            <div class="question-block">
+                <p>6. What data structure is used in a breadth-first search (BFS)?</p>
+                <label><input type="radio" name="q6" value="A"> Stack</label><br>
+                <label><input type="radio" name="q6" value="B"> Queue</label><br>
+                <label><input type="radio" name="q6" value="C"> Priority Queue</label><br>
+                <label><input type="radio" name="q6" value="D"> Linked List</label>
+            </div>
+
+            <div class="question-block">
+                <p>7. Which of the following is a self-balancing binary search tree?</p>
+                <label><input type="radio" name="q7" value="A"> Binary Search Tree</label><br>
+                <label><input type="radio" name="q7" value="B"> AVL Tree</label><br>
+                <label><input type="radio" name="q7" value="C"> Heap</label><br>
+                <label><input type="radio" name="q7" value="D"> Linked List</label>
+            </div>
+
+            <div class="question-block">
+                <p>8. In a max heap, the root node is...</p>
+                <label><input type="radio" name="q8" value="A"> The minimum element</label><br>
+                <label><input type="radio" name="q8" value="B"> The maximum element</label><br>
+                <label><input type="radio" name="q8" value="C"> The median element</label><br>
+                <label><input type="radio" name="q8" value="D"> The average element</label>
+            </div>
+
+            <div class="question-block">
+                <p>9. What is the space complexity of Merge Sort?</p>
+                <label><input type="radio" name="q9" value="A"> O(1)</label><br>
+                <label><input type="radio" name="q9" value="B"> O(n)</label><br>
+                <label><input type="radio" name="q9" value="C"> O(log n)</label><br>
+                <label><input type="radio" name="q9" value="D"> O(n log n)</label>
+            </div>
+
+            <div class="question-block">
+                <p>10. Which data structure can be used to implement recursion?</p>
+                <label><input type="radio" name="q10" value="A"> Queue</label><br>
+                <label><input type="radio" name="q10" value="B"> Stack</label><br>
+                <label><input type="radio" name="q10" value="C"> Linked List</label><br>
+                <label><input type="radio" name="q10" value="D"> Tree</label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+let userId = null;
+const quizName = "DSA Quiz";
+let remainingTime = 60;
+let timerInterval;
+
+// ✅ Correct DSA quiz answers
+const correctAnswers = {
+    q1: "C", // Stack
+    q2: "C", // O(log n)
+    q3: "C", // Tree
+    q4: "B", // Quick Sort
+    q5: "B", // O(n log n)
+    q6: "B", // Queue
+    q7: "B", // AVL Tree
+    q8: "B", // The maximum element
+    q9: "B", // O(n)
+    q10: "B" // Stack
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const res = await fetch("/session-user");
+        if (res.ok) {
+            const user = await res.json();
+            userId = user.userId;
+
+            await loadProgress();
+            startTimer();
+
+            document.querySelectorAll('input[type="radio"]').forEach(radio =>
+                radio.addEventListener("change", saveProgress)
+            );
+        } else {
+            console.warn("Failed to get session user.");
+        }
+    } catch (err) {
+        console.error("Error getting user session:", err);
+    }
+});
+
+// ✅ Correct form ID here
+document.getElementById("dsaQuizForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    await submitQuiz();
+});
+
+async function submitQuiz() {
+    clearInterval(timerInterval);
+    localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+    let score = 0;
+    for (let key in correctAnswers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        if (selected && selected.value === correctAnswers[key]) {
+            score++;
+        }
+    }
+
+    const totalQuestions = Object.keys(correctAnswers).length;
+    const passingScore = 6;
+    const resultStatus = score >= passingScore ? "Pass" : "Fail";
+    const timeTaken = 60 - remainingTime;
+
+    const exam = {
+        userId,
+        examTitle: quizName,
+        totalMarks: score,
+        completedAt: new Date().toISOString(),
+        result: resultStatus
+    };
+
+    try {
+        const response = await fetch("/Exam", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(exam)
+        });
+
+        if (response.ok) {
+            window.location.href = `result.html?score=${score}&total=${totalQuestions}&result=${resultStatus}&time=${timeTaken}`;
+        } else {
+            document.getElementById("message").textContent = "❌ Failed to save exam.";
+        }
+    } catch (err) {
+        console.error("Error submitting exam:", err);
+        document.getElementById("message").textContent = "❌ Error occurred while submitting.";
+    }
+}
+
+function startTimer() {
+    loadSavedTime();
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById("message").textContent = "⏰ Time's up! Please submit your quiz.";
+            document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+        } else {
+            remainingTime--;
+            updateTimerDisplay();
+            saveRemainingTime();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0");
+    const seconds = (remainingTime % 60).toString().padStart(2, "0");
+    document.getElementById("timeDisplay").textContent = `${minutes}:${seconds}`;
+}
+
+function saveRemainingTime() {
+    if (userId) {
+        localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+    }
+}
+
+function loadSavedTime() {
+    if (userId) {
+        const savedTime = localStorage.getItem(`timer_${userId}_${quizName}`);
+        remainingTime = savedTime !== null ? parseInt(savedTime, 10) : 60;
+    }
+}
+
+async function saveProgress() {
+    if (!userId) return;
+
+    const answers = {};
+    for (let i = 1; i <= 10; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+            answers[`q${i}`] = selected.value;
+        }
+    }
+
+    try {
+        await fetch("/quiz-progress/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId,
+                quizName,
+                answersJson: JSON.stringify(answers)
+            })
+        });
+    } catch (err) {
+        console.error("Error saving progress:", err);
+    }
+}
+
+async function loadProgress() {
+    if (!userId) return;
+
+    try {
+        const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.answersJson) {
+                const saved = JSON.parse(data.answersJson);
+                for (const key in saved) {
+                    const radio = document.querySelector(`input[name="${key}"][value="${saved[key]}"]`);
+                    if (radio) radio.checked = true;
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Error loading progress:", err);
+    }
+}
+</script>
+</body>
+</html>

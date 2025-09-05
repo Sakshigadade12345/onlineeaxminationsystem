@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML & CSS Quiz</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>HTML & CSS Quiz</h1>
+        <!-- Timer Display -->
+<div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #e74c3c; text-align: center;">
+    Time Left: <span id="timeDisplay">1:00</span>
+</div>
+<div id="message" style="text-align: center; color: red; font-weight: bold;"></div>
+
+
+        <form class="quiz-form" id="htmlCssQuizForm">
+            <div class="question-block">
+                <p>1. What does HTML stand for?</p>
+                <label><input type="radio" name="q1" value="A"> Hyper Tool Markup Language</label><br>
+                <label><input type="radio" name="q1" value="B"> Hyperlinks and Text Markup Language</label><br>
+                <label><input type="radio" name="q1" value="C"> HyperText Markup Language</label><br>
+                <label><input type="radio" name="q1" value="D"> Home Tool Markup Language</label>
+            </div>
+
+            <div class="question-block">
+                <p>2. What is the correct HTML tag for inserting a line break?</p>
+                <label><input type="radio" name="q2" value="A">&lt;break&gt;</label><br>
+                <label><input type="radio" name="q2" value="B">&lt;lb&gt;</label><br>
+                <label><input type="radio" name="q2" value="C">&lt;br&gt;</label><br>
+                <label><input type="radio" name="q2" value="D">&lt;line&gt;</label>
+            </div>
+
+            <div class="question-block">
+                <p>3. What does CSS stand for?</p>
+                <label><input type="radio" name="q3" value="A"> Computer Style Sheets</label><br>
+                <label><input type="radio" name="q3" value="B"> Creative Style Sheets</label><br>
+                <label><input type="radio" name="q3" value="C"> Cascading Style Sheets</label><br>
+                <label><input type="radio" name="q3" value="D"> Colorful Style Sheets</label>
+            </div>
+
+            <div class="question-block">
+                <p>4. Which HTML tag is used to define an unordered list?</p>
+                <label><input type="radio" name="q4" value="A">&lt;ul&gt;</label><br>
+                <label><input type="radio" name="q4" value="B">&lt;ol&gt;</label><br>
+                <label><input type="radio" name="q4" value="C">&lt;list&gt;</label><br>
+                <label><input type="radio" name="q4" value="D">&lt;li&gt;</label>
+            </div>
+
+            <div class="question-block">
+                <p>5. Which property is used in CSS to change text color?</p>
+                <label><input type="radio" name="q5" value="A"> font-color</label><br>
+                <label><input type="radio" name="q5" value="B"> text-color</label><br>
+                <label><input type="radio" name="q5" value="C"> color</label><br>
+                <label><input type="radio" name="q5" value="D"> background-color</label>
+            </div>
+
+            <div class="question-block">
+                <p>6. Which CSS property controls the text size?</p>
+                <label><input type="radio" name="q6" value="A"> font-style</label><br>
+                <label><input type="radio" name="q6" value="B"> text-size</label><br>
+                <label><input type="radio" name="q6" value="C"> font-size</label><br>
+                <label><input type="radio" name="q6" value="D"> text-style</label>
+            </div>
+
+            <div class="question-block">
+                <p>7. What is the correct HTML tag for the largest heading?</p>
+                <label><input type="radio" name="q7" value="A">&lt;h1&gt;</label><br>
+                <label><input type="radio" name="q7" value="B">&lt;heading&gt;</label><br>
+                <label><input type="radio" name="q7" value="C">&lt;head&gt;</label><br>
+                <label><input type="radio" name="q7" value="D">&lt;h6&gt;</label>
+            </div>
+
+            <div class="question-block">
+                <p>8. How do you create a link in HTML?</p>
+                <label><input type="radio" name="q8" value="A">&lt;link href="url"&gt;Click&lt;/link&gt;</label><br>
+                <label><input type="radio" name="q8" value="B">&lt;a url="url"&gt;Click&lt;/a&gt;</label><br>
+                <label><input type="radio" name="q8" value="C">&lt;a href="url"&gt;Click&lt;/a&gt;</label><br>
+                <label><input type="radio" name="q8" value="D">&lt;href&gt;Click&lt;/href&gt;</label>
+            </div>
+
+            <div class="question-block">
+                <p>9. How do you apply a class in CSS?</p>
+                <label><input type="radio" name="q9" value="A"> #classname</label><br>
+                <label><input type="radio" name="q9" value="B"> classname</label><br>
+                <label><input type="radio" name="q9" value="C"> .classname</label><br>
+                <label><input type="radio" name="q9" value="D"> *classname</label>
+            </div>
+
+            <div class="question-block">
+                <p>10. What is the correct way to add CSS to HTML?</p>
+                <label><input type="radio" name="q10" value="A"> &lt;css&gt;...&lt;/css&gt;</label><br>
+                <label><input type="radio" name="q10" value="B"> &lt;style&gt;...&lt;/style&gt;</label><br>
+                <label><input type="radio" name="q10" value="C"> &lt;script&gt;...&lt;/script&gt;</label><br>
+                <label><input type="radio" name="q10" value="D"> &lt;styles&gt;...&lt;/styles&gt;</label>
+            </div>
+
+             <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+    let userId = null;
+    const quizName = "HTML & CSS Quiz";
+    let remainingTime = 60;
+    let timerInterval;
+
+    const correctAnswers = {
+    q1: "C", q2: "C", q3: "C", q4: "A", q5: "C",
+    q6: "C", q7: "A", q8: "C", q9: "C", q10: "B"
+  };
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch("/session-user");
+      if (res.ok) {
+        const user = await res.json();
+        userId = user.userId;
+
+        await loadProgress();
+        startTimer();
+
+        document.querySelectorAll('input[type="radio"]').forEach(input =>
+          input.addEventListener("change", saveProgress)
+        );
+      } else {
+        console.warn("⚠️ Failed to get session user.");
+      }
+    } catch (err) {
+      console.error("❌ Error getting user session:", err);
+    }
+  });
+
+  document.getElementById("htmlCssQuizForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    await submitQuiz();
+  });
+
+  async function submitQuiz() {
+    for (let i = 1; i <= 10; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
+     document.getElementById("message").textContent = `❗ Please answer all the questions before submitting.`;
+
+      return; // Stop submission
+    }
+  }
+    clearInterval(timerInterval);
+    localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+    let score = 0;
+    for (let key in correctAnswers) {
+      const selected = document.querySelector(`input[name="${key}"]:checked`);
+      if (selected && selected.value === correctAnswers[key]) {
+        score++;
+      }
+    }
+
+    const totalQuestions = Object.keys(correctAnswers).length;
+    const passingScore = 6;
+    const resultStatus = score >= passingScore ? "Pass" : "Fail";
+    const timeTaken = (1 * 60) - remainingTime;
+
+    const exam = {
+      userId: userId,
+      examTitle: quizName,
+      totalMarks: score,
+      completedAt: new Date().toISOString(),
+      result: resultStatus
+    };
+
+    try {
+      const response = await fetch("/Exam", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(exam)
+      });
+
+      if (response.ok) {
+        window.location.href = `result.html?score=${score}&total=${totalQuestions}&result=${resultStatus}&time=${timeTaken}`;
+      } else {
+        alert("Failed to save exam.");
+      }
+    } catch (err) {
+      console.error("Error submitting exam:", err);
+      alert("Error occurred while submitting.");
+    }
+  }
+
+  function startTimer() {
+    loadSavedTime();
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        const messageEl = document.getElementById("message");
+        if (messageEl) {
+          messageEl.textContent = "⏰ Time's up! Please submit your quiz.";
+        }
+        document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+        document.getElementById("submitBtn").disabled = false;
+      } else {
+        remainingTime--;
+        updateTimerDisplay();
+        saveRemainingTime();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    document.getElementById("timeDisplay").textContent =
+      `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  function saveRemainingTime() {
+    if (userId) {
+      localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+    }
+  }
+
+  function loadSavedTime() {
+    if (userId) {
+      const savedTime = localStorage.getItem(`timer_${userId}_${quizName}`);
+      if (savedTime !== null) {
+        remainingTime = parseInt(savedTime, 10);
+      } else {
+        remainingTime = 1 * 60;
+      }
+    }
+  }
+
+  async function saveProgress() {
+    if (!userId) return;
+
+    const answers = {};
+    for (let i = 1; i <= 10; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      if (selected) {
+        answers[`q${i}`] = selected.value;
+      }
+    }
+
+    try {
+      await fetch("/quiz-progress/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+          quizName: quizName,
+          answersJson: JSON.stringify(answers)
+        })
+      });
+    } catch (err) {
+      console.error("❌ Error saving progress:", err);
+    }
+  }
+
+  async function loadProgress() {
+    if (!userId) return;
+
+    try {
+      const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.answersJson) {
+          const saved = JSON.parse(data.answersJson);
+          for (let key in saved) {
+            const value = saved[key];
+            const radio = document.querySelector(`input[name="${key}"][value="${value}"]`);
+            if (radio) radio.checked = true;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("❌ Error loading progress:", err);
+    }
+  }
+</script>
+</body>
+</html>

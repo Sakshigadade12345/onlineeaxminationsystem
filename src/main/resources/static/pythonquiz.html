@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Programming Quiz</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Python Programming Quiz</h1>
+         <div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center;">
+      Time Left: <span id="timeDisplay">1:00</span>
+    </div>
+
+    <!-- ✅ Message area -->
+    <div id="message" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;"></div>
+
+        <form class="quiz-form" id="pythonQuizForm">
+            <div class="question-block">
+                <p>1. What is the output of <code>print(2 ** 3)</code>?</p>
+                <label><input type="radio" name="q1" value="A"> 6</label><br>
+                <label><input type="radio" name="q1" value="B"> 8</label><br>
+                <label><input type="radio" name="q1" value="C"> 9</label><br>
+                <label><input type="radio" name="q1" value="D"> 5</label>
+            </div>
+
+            <div class="question-block">
+                <p>2. Which keyword is used to create a function in Python?</p>
+                <label><input type="radio" name="q2" value="A"> func</label><br>
+                <label><input type="radio" name="q2" value="B"> def</label><br>
+                <label><input type="radio" name="q2" value="C"> define</label><br>
+                <label><input type="radio" name="q2" value="D"> function</label>
+            </div>
+
+            <div class="question-block">
+                <p>3. What data structure does <code>{}</code> represent in Python?</p>
+                <label><input type="radio" name="q3" value="A"> List</label><br>
+                <label><input type="radio" name="q3" value="B"> Set</label><br>
+                <label><input type="radio" name="q3" value="C"> Tuple</label><br>
+                <label><input type="radio" name="q3" value="D"> Dictionary</label>
+            </div>
+
+            <div class="question-block">
+                <p>4. Which of these is not a valid Python data type?</p>
+                <label><input type="radio" name="q4" value="A"> int</label><br>
+                <label><input type="radio" name="q4" value="B"> float</label><br>
+                <label><input type="radio" name="q4" value="C"> real</label><br>
+                <label><input type="radio" name="q4" value="D"> str</label>
+            </div>
+
+            <div class="question-block">
+                <p>5. What is the correct way to comment a single line in Python?</p>
+                <label><input type="radio" name="q5" value="A"> // comment</label><br>
+               <label><input type="radio" name="q5" value="B"> &lt;!-- comment --&gt;</label><br>
+                <label><input type="radio" name="q5" value="C"> # comment</label><br>
+                <label><input type="radio" name="q5" value="D"> /* comment */</label>
+            </div>
+
+            <div class="question-block">
+                <p>6. What does the <code>len()</code> function do in Python?</p>
+                <label><input type="radio" name="q6" value="A"> Returns the type of a variable</label><br>
+                <label><input type="radio" name="q6" value="B"> Returns the length of an object</label><br>
+                <label><input type="radio" name="q6" value="C"> Converts string to integer</label><br>
+                <label><input type="radio" name="q6" value="D"> Prints output</label>
+            </div>
+
+            <div class="question-block">
+                <p>7. How do you start a for loop in Python?</p>
+                <label><input type="radio" name="q7" value="A"> for i to 10:</label><br>
+                <label><input type="radio" name="q7" value="B"> for i in range(10):</label><br>
+                <label><input type="radio" name="q7" value="C"> for (i = 0; i < 10; i++):</label><br>
+                <label><input type="radio" name="q7" value="D"> loop i in 10</label>
+            </div>
+
+            <div class="question-block">
+                <p>8. What is the output of <code>print("Hello" + "World")</code>?</p>
+                <label><input type="radio" name="q8" value="A"> Hello World</label><br>
+                <label><input type="radio" name="q8" value="B"> HelloWorld</label><br>
+                <label><input type="radio" name="q8" value="C"> Hello+World</label><br>
+                <label><input type="radio" name="q8" value="D"> Error</label>
+            </div>
+
+           <div class="question-block">
+    <p>9. What will be the output of <code>print(type([]))</code>?</p>
+    <label><input type="radio" name="q9" value="A"> &lt;class 'list'&gt;</label><br>
+    <label><input type="radio" name="q9" value="B"> &lt;class 'tuple'&gt;</label><br>
+    <label><input type="radio" name="q9" value="C"> &lt;class 'dict'&gt;</label><br>
+    <label><input type="radio" name="q9" value="D"> &lt;class 'set'&gt;</label>
+</div>
+
+            <div class="question-block">
+                <p>10. Which of the following is used to handle exceptions in Python?</p>
+                <label><input type="radio" name="q10" value="A"> try-except</label><br>
+                <label><input type="radio" name="q10" value="B"> catch-try</label><br>
+                <label><input type="radio" name="q10" value="C"> do-catch</label><br>
+                <label><input type="radio" name="q10" value="D"> handle-error</label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    
+     <script>
+    let userId = null;
+    const quizName = "Python Programming Quiz";
+    let remainingTime = 60;
+    let timerInterval;
+
+    // ✅ Correct answers for the Python quiz
+    const correctAnswers = {
+      q1: "B",  // 2 ** 3 = 8
+      q2: "B",  // def
+      q3: "D",  // {}
+      q4: "C",  // real (not a valid data type)
+      q5: "C",  // # comment
+      q6: "B",  // len()
+      q7: "B",  // for i in range(10):
+      q8: "B",  // HelloWorld
+      q9: "A",  // <class 'list'>
+      q10: "A"  // try-except
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("/session-user");
+        if (res.ok) {
+          const user = await res.json();
+          userId = user.userId;
+
+          await loadProgress();
+          startTimer();
+
+          document.querySelectorAll('input[type="radio"]').forEach(radio =>
+            radio.addEventListener("change", saveProgress)
+          );
+        } else {
+          console.warn("Failed to get session user.");
+        }
+      } catch (err) {
+        console.error("Error getting user session:", err);
+      }
+    });
+
+    // ✅ Listen to the correct form ID
+    document.getElementById("pythonQuizForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      await submitQuiz();
+    });
+
+    async function submitQuiz() {
+        for (let i = 1; i <= 10; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
+     document.getElementById("message").textContent = `❗ Please answer all the questions before submitting.`;
+
+      return; // Stop submission
+    }
+  }
+      clearInterval(timerInterval);
+      localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+      let score = 0;
+      for (let key in correctAnswers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        if (selected && selected.value === correctAnswers[key]) {
+          score++;
+        }
+      }
+
+      const totalQuestions = Object.keys(correctAnswers).length;
+      const passingScore = 6;
+      const resultStatus = score >= passingScore ? "Pass" : "Fail";
+      const timeTaken = 60 - remainingTime;
+
+      const exam = {
+        userId,
+        examTitle: quizName,
+        totalMarks: score,
+        completedAt: new Date().toISOString(),
+        result: resultStatus
+      };
+
+      try {
+        const response = await fetch("/Exam", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(exam)
+        });
+
+        if (response.ok) {
+          window.location.href = `result.html?score=${score}&total=${totalQuestions}&result=${resultStatus}&time=${timeTaken}`;
+        } else {
+          document.getElementById("message").textContent = "❌ Failed to save exam.";
+        }
+      } catch (err) {
+        console.error("Error submitting exam:", err);
+        document.getElementById("message").textContent = "❌ Error occurred while submitting.";
+      }
+    }
+
+    function startTimer() {
+      loadSavedTime();
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("message").textContent = "⏰ Time's up! Please submit your quiz.";
+          document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+        } else {
+          remainingTime--;
+          updateTimerDisplay();
+          saveRemainingTime();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0");
+      const seconds = (remainingTime % 60).toString().padStart(2, "0");
+      document.getElementById("timeDisplay").textContent = `${minutes}:${seconds}`;
+    }
+
+    function saveRemainingTime() {
+      if (userId) {
+        localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+      }
+    }
+
+    function loadSavedTime() {
+      if (userId) {
+        const savedTime = localStorage.getItem(`timer_${userId}_${quizName}`);
+        remainingTime = savedTime !== null ? parseInt(savedTime, 10) : 60;
+      }
+    }
+
+    async function saveProgress() {
+      if (!userId) return;
+
+      const answers = {};
+      for (let i = 1; i <= 10; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          answers[`q${i}`] = selected.value;
+        }
+      }
+
+      try {
+        await fetch("/quiz-progress/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId,
+            quizName,
+            answersJson: JSON.stringify(answers)
+          })
+        });
+      } catch (err) {
+        console.error("Error saving progress:", err);
+      }
+    }
+
+    async function loadProgress() {
+      if (!userId) return;
+
+      try {
+        const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.answersJson) {
+            const saved = JSON.parse(data.answersJson);
+            for (const key in saved) {
+              const radio = document.querySelector(`input[name="${key}"][value="${saved[key]}"]`);
+              if (radio) radio.checked = true;
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading progress:", err);
+      }
+    }
+  </script>
+</body>
+</html>

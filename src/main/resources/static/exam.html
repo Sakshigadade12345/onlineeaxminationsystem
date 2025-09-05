@@ -1,0 +1,50 @@
+<script>
+let currentAttempt = null;
+let questions = []; // Your questions array
+
+async function onLogin(userId, examTitle) {
+  try {
+    const res = await fetch(`/examAttempt/resume?userId=${userId}&examTitle=${examTitle}`);
+    const attempt = await res.json();
+
+    if (attempt) {
+      currentAttempt = attempt;
+      questions = loadQuestions(); // Load from server or local data
+
+      // Restore answers from answersJson
+      const answers = JSON.parse(attempt.answersJson || '{}');
+      for (const [qId, selectedOption] of Object.entries(answers)) {
+        const input = document.querySelector(`input[name="${qId}"][value="${selectedOption}"]`);
+        if (input) input.checked = true;
+      }
+
+      // Navigate to last seen question
+      showQuestion(attempt.currentQuestionIndex || 0);
+    }
+  } catch (err) {
+    console.error('Error resuming exam:', err);
+  }
+}
+
+// Auto-save on each answer selection or interval
+function onAnswerSelected(questionId, selectedOption) {
+  const answers = JSON.parse(currentAttempt.answersJson || '{}');
+  answers[questionId] = selectedOption;
+  currentAttempt.answersJson = JSON.stringify(answers);
+  currentAttempt.answeredQuestions = Object.keys(answers).length;
+
+  autoSave(currentAttempt);
+}
+
+async function autoSave(attempt) {
+  try {
+    await fetch('/examAttempt/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(attempt)
+    });
+  } catch (err) {
+    console.error('Auto-save failed:', err);
+  }
+}
+</script>

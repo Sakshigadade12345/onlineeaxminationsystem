@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Result Page</title>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Result</h1>
+    <p id="resultText"></p>
+  </div>
+  <div style="margin-top: 20px; text-align: center;">
+    <a href="dashboard.html" style="text-decoration: none; color: blue;"> Back to Dashboard</a>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const score = urlParams.get('score');
+      const total = urlParams.get('total');
+      const time = urlParams.get('time');
+      const result = urlParams.get('result'); // Only declare ONCE
+
+      const container = document.querySelector(".dashboard-container");
+
+      if (score !== null && total !== null) {
+        document.getElementById("resultText").innerText = `You scored ${score} out of ${total}.`;
+
+        // ✅ Append Pass/Fail result
+        if (result) {
+          const resultElement = document.createElement("p");
+          resultElement.style.fontWeight = "bold";
+          resultElement.style.fontSize = "18px";
+          resultElement.style.color = result === "Pass" ? "green" : "red";
+          resultElement.innerText = ` Result: ${result}`;
+          container.appendChild(resultElement);
+        }
+
+        // ✅ Append time taken
+        if (time !== null) {
+          const minutes = Math.floor(time / 60);
+          const seconds = time % 60;
+          const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+          const timeElement = document.createElement("p");
+          timeElement.innerText = ` Time Taken: ${timeString}`;
+          container.appendChild(timeElement);
+        }
+
+      } else {
+        document.getElementById("resultText").innerText = "Score not available.";
+      }
+    });
+  </script>
+</body>
+</html>

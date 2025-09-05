@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot Quiz</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Spring Boot Quiz</h1>
+         <div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center;">
+            Time Left: <span id="timeDisplay">1:00</span>
+        </div>
+        <div id="message" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;"></div>
+
+        <form class="quiz-form" id="springBootQuizForm">
+            <!-- Questions 1 to 10 -->
+            <div class="question-block">
+                <p>1. What does Spring Boot simplify?</p>
+                <label><input type="radio" name="q1" value="A"> Web Hosting</label><br>
+                <label><input type="radio" name="q1" value="B"> JavaScript Programming</label><br>
+                <label><input type="radio" name="q1" value="C"> Configuration and setup of Spring applications</label><br>
+                <label><input type="radio" name="q1" value="D"> Frontend Design</label>
+            </div>
+
+            <div class="question-block">
+                <p>2. Which annotation is used to start a Spring Boot application?</p>
+                <label><input type="radio" name="q2" value="A">@EnableBoot</label><br>
+                <label><input type="radio" name="q2" value="B">@SpringBootApplication</label><br>
+                <label><input type="radio" name="q2" value="C">@StartApp</label><br>
+                <label><input type="radio" name="q2" value="D">@Configuration</label>
+            </div>
+
+            <div class="question-block">
+                <p>3. Which file is used to configure a Spring Boot project?</p>
+                <label><input type="radio" name="q3" value="A">config.txt</label><br>
+                <label><input type="radio" name="q3" value="B">pom.xml or build.gradle</label><br>
+                <label><input type="radio" name="q3" value="C">app.config</label><br>
+                <label><input type="radio" name="q3" value="D">application.exe</label>
+            </div>
+
+            <div class="question-block">
+                <p>4. What is the default embedded server in Spring Boot?</p>
+                <label><input type="radio" name="q4" value="A">Jetty</label><br>
+                <label><input type="radio" name="q4" value="B">WebLogic</label><br>
+                <label><input type="radio" name="q4" value="C">Tomcat</label><br>
+                <label><input type="radio" name="q4" value="D">JBoss</label>
+            </div>
+
+            <div class="question-block">
+                <p>5. Which command runs a Spring Boot app?</p>
+                <label><input type="radio" name="q5" value="A">java -boot</label><br>
+                <label><input type="radio" name="q5" value="B">mvn spring-boot:run</label><br>
+                <label><input type="radio" name="q5" value="C">spring start</label><br>
+                <label><input type="radio" name="q5" value="D">run boot</label>
+            </div>
+
+            <div class="question-block">
+                <p>6. What is the purpose of application.properties in Spring Boot?</p>
+                <label><input type="radio" name="q6" value="A">Storing JavaScript</label><br>
+                <label><input type="radio" name="q6" value="B">Managing Frontend Styles</label><br>
+                <label><input type="radio" name="q6" value="C">Configuring application settings</label><br>
+                <label><input type="radio" name="q6" value="D">Database design</label>
+            </div>
+
+            <div class="question-block">
+                <p>7. Which starter is used for building web applications in Spring Boot?</p>
+                <label><input type="radio" name="q7" value="A">spring-boot-starter-data-jpa</label><br>
+                <label><input type="radio" name="q7" value="B">spring-boot-starter-web</label><br>
+                <label><input type="radio" name="q7" value="C">spring-boot-starter-mail</label><br>
+                <label><input type="radio" name="q7" value="D">spring-boot-starter-aop</label>
+            </div>
+
+            <div class="question-block">
+                <p>8. Which dependency allows Spring Boot to auto-configure beans?</p>
+                <label><input type="radio" name="q8" value="A">Spring Boot CLI</label><br>
+                <label><input type="radio" name="q8" value="B">spring-boot-autoconfigure</label><br>
+                <label><input type="radio" name="q8" value="C">spring-core</label><br>
+                <label><input type="radio" name="q8" value="D">spring-data</label>
+            </div>
+
+            <div class="question-block">
+                <p>9. What is Actuator in Spring Boot used for?</p>
+                <label><input type="radio" name="q9" value="A">Writing HTML code</label><br>
+                <label><input type="radio" name="q9" value="B">Managing cloud infrastructure</label><br>
+                <label><input type="radio" name="q9" value="C">Monitoring and managing your app</label><br>
+                <label><input type="radio" name="q9" value="D">Testing frontend components</label>
+            </div>
+
+            <div class="question-block">
+                <p>10. What is the use of @RestController annotation?</p>
+                <label><input type="radio" name="q10" value="A">To define a database table</label><br>
+                <label><input type="radio" name="q10" value="B">To send data to frontend templates</label><br>
+                <label><input type="radio" name="q10" value="C">To return data directly as JSON or XML</label><br>
+                <label><input type="radio" name="q10" value="D">To create UI forms</label>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+      <script>
+    let userId = null;
+    const quizName = "Spring Boot Quiz";
+    let remainingTime = 60;
+    let timerInterval;
+
+    const correctAnswers = {
+      q1: "C",
+      q2: "B",
+      q3: "B",
+      q4: "C",
+      q5: "B",
+      q6: "C",
+      q7: "B",
+      q8: "B",
+      q9: "C",
+      q10: "C",
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const res = await fetch("/session-user");
+        if (res.ok) {
+          const user = await res.json();
+          userId = user.userId;
+
+          await loadProgress();
+          startTimer();
+
+          document.querySelectorAll('input[type="radio"]').forEach(input =>
+            input.addEventListener("change", saveProgress)
+          );
+        } else {
+          console.warn("⚠️ Failed to get session user.");
+        }
+      } catch (err) {
+        console.error("❌ Error getting user session:", err);
+      }
+
+      // ✅ FIXED: Correct form ID
+      document.getElementById("springBootQuizForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        await submitQuiz();
+      });
+    });
+
+    async function submitQuiz() {
+        for (let i = 1; i <= 10; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
+     document.getElementById("message").textContent = `❗ Please answer all the questions before submitting.`;
+
+      return; // Stop submission
+    }
+  }
+  clearInterval(timerInterval);
+  localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+  let score = 0;
+  for (let key in correctAnswers) {
+    const selected = document.querySelector(`input[name="${key}"]:checked`);
+    if (selected && selected.value === correctAnswers[key]) {
+      score++;
+    }
+  }
+
+  const totalQuestions = Object.keys(correctAnswers).length;
+  const passMark = Math.ceil(totalQuestions * 0.4); // 40% pass mark
+  const resultStatus = score >= passMark ? "Pass" : "Fail";
+  const timeTaken = (1 * 60) - remainingTime; // ⏱️ Calculate time taken
+
+  const exam = {
+    userId: userId,
+    examTitle: quizName,
+    totalMarks: score,
+    completedAt: new Date().toISOString(),
+    result: resultStatus,
+    timeTaken: timeTaken
+  };
+
+  try {
+    const response = await fetch("/Exam", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(exam)
+    });
+
+    if (response.ok) {
+      // ✅ Redirect with full query parameters
+      window.location.href = `result.html?score=${score}&total=${totalQuestions}&result=${resultStatus}&time=${timeTaken}`;
+    } else {
+      alert("❌ Failed to save exam.");
+    }
+  } catch (err) {
+    console.error("❌ Error submitting exam:", err);
+    alert("Error occurred while submitting.");
+  }
+}
+
+
+    function startTimer() {
+      loadSavedTime();
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          const messageEl = document.getElementById("message");
+          if (messageEl) {
+            messageEl.textContent = "⏰ Time's up! Please submit your quiz.";
+          }
+
+          document.querySelectorAll("input[type='radio']").forEach(input => input.disabled = true);
+          document.getElementById("submitBtn").disabled = false;
+        } else {
+          remainingTime--;
+          updateTimerDisplay();
+          saveRemainingTime();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(remainingTime / 60);
+      const seconds = remainingTime % 60;
+      document.getElementById("timeDisplay").textContent =
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function saveRemainingTime() {
+      if (userId) {
+        localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+      }
+    }
+
+    function loadSavedTime() {
+      if (userId) {
+        const savedTime = localStorage.getItem(`timer_${userId}_${quizName}`);
+        if (savedTime !== null) {
+          remainingTime = parseInt(savedTime, 10);
+        } else {
+          remainingTime = 60;
+        }
+      }
+    }
+
+    async function saveProgress() {
+      if (!userId) return;
+
+      const answers = {};
+      for (let i = 1; i <= 10; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          answers[`q${i}`] = selected.value;
+        }
+      }
+
+      try {
+        await fetch("/quiz-progress/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: userId,
+            quizName: quizName,
+            answersJson: JSON.stringify(answers)
+          })
+        });
+      } catch (err) {
+        console.error("❌ Error saving progress:", err);
+      }
+    }
+
+    async function loadProgress() {
+      if (!userId) return;
+
+      try {
+        const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.answersJson) {
+            const saved = JSON.parse(data.answersJson);
+            for (let key in saved) {
+              const value = saved[key];
+              const radio = document.querySelector(`input[name="${key}"][value="${value}"]`);
+              if (radio) radio.checked = true;
+            }
+          }
+        }
+      } catch (err) {
+        console.error("❌ Error loading progress:", err);
+      }
+    }
+  </script>
+</body>
+</html>

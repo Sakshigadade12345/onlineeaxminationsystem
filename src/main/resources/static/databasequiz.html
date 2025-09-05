@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database Quiz</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Database Quiz</h1>
+        <!-- ✅ Timer display -->
+    <div id="timer" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #e74c3c; text-align: center;">
+      Time Left: <span id="timeDisplay">1:00</span>
+    </div>
+
+    <!-- ✅ Message area -->
+    <div id="message" style="color: red; font-weight: bold; text-align: center; margin-bottom: 20px;"></div>
+
+        <form class="quiz-form" id="databaseQuizForm">
+            <div class="question-block">
+                <p>1. What does SQL stand for?</p>
+                <label><input type="radio" name="q1" value="A"> Strong Question Language</label><br>
+                <label><input type="radio" name="q1" value="B"> Structured Query Language</label><br>
+                <label><input type="radio" name="q1" value="C"> Simple Query List</label><br>
+                <label><input type="radio" name="q1" value="D"> Sequential Query Logic</label>
+            </div>
+
+            <div class="question-block">
+                <p>2. Which SQL command is used to retrieve data?</p>
+                <label><input type="radio" name="q2" value="A"> GET</label><br>
+                <label><input type="radio" name="q2" value="B"> FETCH</label><br>
+                <label><input type="radio" name="q2" value="C"> SELECT</label><br>
+                <label><input type="radio" name="q2" value="D"> SHOW</label>
+            </div>
+
+            <div class="question-block">
+                <p>3. Which of the following is a NoSQL database?</p>
+                <label><input type="radio" name="q3" value="A"> Oracle</label><br>
+                <label><input type="radio" name="q3" value="B"> MongoDB</label><br>
+                <label><input type="radio" name="q3" value="C"> MySQL</label><br>
+                <label><input type="radio" name="q3" value="D"> PostgreSQL</label>
+            </div>
+
+            <div class="question-block">
+                <p>4. What is a primary key?</p>
+                <label><input type="radio" name="q4" value="A"> A random unique value</label><br>
+                <label><input type="radio" name="q4" value="B"> A column that must contain null values</label><br>
+                <label><input type="radio" name="q4" value="C"> A column that uniquely identifies each row</label><br>
+                <label><input type="radio" name="q4" value="D"> A foreign column</label>
+            </div>
+
+            <div class="question-block">
+                <p>5. What does the acronym ACID stand for?</p>
+                <label><input type="radio" name="q5" value="A"> Atomicity, Consistency, Isolation, Durability</label><br>
+                <label><input type="radio" name="q5" value="B"> Action, Control, Isolation, Durability</label><br>
+                <label><input type="radio" name="q5" value="C"> Access, Command, Integrity, Data</label><br>
+                <label><input type="radio" name="q5" value="D"> Atomic, Central, Instant, Durable</label>
+            </div>
+
+            <div class="question-block">
+                <p>6. Which SQL clause is used to filter records?</p>
+                <label><input type="radio" name="q6" value="A"> ORDER BY</label><br>
+                <label><input type="radio" name="q6" value="B"> WHERE</label><br>
+                <label><input type="radio" name="q6" value="C"> GROUP BY</label><br>
+                <label><input type="radio" name="q6" value="D"> FILTER</label>
+            </div>
+
+            <div class="question-block">
+                <p>7. What is a foreign key?</p>
+                <label><input type="radio" name="q7" value="A"> A key to open the database</label><br>
+                <label><input type="radio" name="q7" value="B"> A key that identifies rows in its own table</label><br>
+                <label><input type="radio" name="q7" value="C"> A key used to link two tables together</label><br>
+                <label><input type="radio" name="q7" value="D"> A duplicate of a primary key</label>
+            </div>
+
+            <div class="question-block">
+                <p>8. Which command is used to delete all rows from a table?</p>
+                <label><input type="radio" name="q8" value="A"> REMOVE</label><br>
+                <label><input type="radio" name="q8" value="B"> ERASE</label><br>
+                <label><input type="radio" name="q8" value="C"> DELETE</label><br>
+                <label><input type="radio" name="q8" value="D"> DROP</label>
+            </div>
+
+            <div class="question-block">
+                <p>9. What does normalization do in a database?</p>
+                <label><input type="radio" name="q9" value="A"> Adds redundancy</label><br>
+                <label><input type="radio" name="q9" value="B"> Increases data duplication</label><br>
+                <label><input type="radio" name="q9" value="C"> Organizes data efficiently and reduces redundancy</label><br>
+                <label><input type="radio" name="q9" value="D"> Makes the database faster</label>
+            </div>
+
+            <div class="question-block">
+                <p>10. Which SQL keyword is used to sort the result-set?</p>
+                <label><input type="radio" name="q10" value="A"> GROUP BY</label><br>
+                <label><input type="radio" name="q10" value="B"> SORT</label><br>
+                <label><input type="radio" name="q10" value="C"> ORDER BY</label><br>
+                <label><input type="radio" name="q10" value="D"> ARRANGE</label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="nav-links">
+            <a href="dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+ <script>
+let userId = null;
+const quizName = "Database Quiz";
+let remainingTime = 60; // seconds
+let timerInterval;
+
+const correctAnswers = {
+    q1: "B", q2: "C", q3: "B", q4: "C", q5: "A",
+    q6: "B", q7: "C", q8: "C", q9: "C", q10: "C"
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const res = await fetch("/session-user");
+        if (res.ok) {
+            const user = await res.json();
+            userId = user.userId;
+
+            await loadProgress();
+            startTimer();
+
+            document.querySelectorAll('input[type="radio"]').forEach(radio =>
+                radio.addEventListener("change", saveProgress)
+            );
+        } else {
+            console.warn("Failed to get session user.");
+        }
+    } catch (err) {
+        console.error("Error getting user session:", err);
+    }
+});
+
+document.getElementById("databaseQuizForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    await submitQuiz();
+});
+
+async function submitQuiz() {
+    for (let i = 1; i <= 10; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
+     document.getElementById("message").textContent = `❗ Please answer all the questions before submitting.`;
+
+      return; // Stop submission
+    }
+  }
+    clearInterval(timerInterval);
+    localStorage.removeItem(`timer_${userId}_${quizName}`);
+
+    let score = 0;
+    for (let key in correctAnswers) {
+        const sel = document.querySelector(`input[name="${key}"]:checked`);
+        if (sel && sel.value === correctAnswers[key]) score++;
+    }
+
+    const total = Object.keys(correctAnswers).length;
+    const resultStatus = score >= Math.ceil(total*0.4) ? "Pass" : "Fail";
+    const timeTaken = 60 - remainingTime;
+
+    const exam = {
+        userId,
+        examTitle: quizName,
+        totalMarks: score,
+        completedAt: new Date().toISOString(),
+        result: resultStatus
+    };
+
+    try {
+        const response = await fetch("/Exam", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(exam)
+        });
+
+        if (response.ok) {
+            window.location.href = `result.html?score=${score}&total=${total}&result=${resultStatus}&time=${timeTaken}`;
+        } else {
+            document.getElementById("message").textContent = "Failed to save exam.";
+        }
+    } catch (err) {
+        document.getElementById("message").textContent = "Error submitting exam.";
+    }
+}
+
+function startTimer() {
+    loadSavedTime();
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById("message").textContent = "⏰ Time's up! Please submit.";
+            document.querySelectorAll("input[type='radio']").forEach(r => r.disabled = true);
+        } else {
+            remainingTime--;
+            updateTimerDisplay();
+            saveRemainingTime();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const mins = Math.floor(remainingTime / 60).toString().padStart(2, '0');
+    const secs = (remainingTime % 60).toString().padStart(2, '0');
+    document.getElementById("timeDisplay").textContent = `${mins}:${secs}`;
+}
+
+function saveRemainingTime() {
+    if (userId) localStorage.setItem(`timer_${userId}_${quizName}`, remainingTime);
+}
+
+function loadSavedTime() {
+    const saved = userId && localStorage.getItem(`timer_${userId}_${quizName}`);
+    remainingTime = saved ? parseInt(saved, 10) : 60;
+}
+
+async function saveProgress() {
+    if (!userId) return;
+
+    const answers = {};
+    for (let i = 1; i <= 10; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        if (sel) answers[`q${i}`] = sel.value;
+    }
+
+    try {
+        await fetch("/quiz-progress/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, quizName, answersJson: JSON.stringify(answers) })
+        });
+    } catch (err) {
+        console.error("Error saving progress:", err);
+    }
+}
+
+async function loadProgress() {
+    if (!userId) return;
+
+    try {
+        const res = await fetch(`/quiz-progress/load?userId=${userId}&quizName=${encodeURIComponent(quizName)}`);
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (!data.answersJson) return;
+
+        const saved = JSON.parse(data.answersJson);
+        for (let key in saved) {
+            const sel = document.querySelector(`input[name="${key}"][value="${saved[key]}"]`);
+            if (sel) sel.checked = true;
+        }
+    } catch (err) {
+        console.error("Error loading progress:", err);
+    }
+}
+</script>
+</body>
+</html> 
