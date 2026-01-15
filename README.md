@@ -1,6 +1,7 @@
 # Online Examination System
 
-Online Examination System is a web-based application developed to conduct exams in an online and secure manner.
+Online Examination System is a web-based application developed as part of my  
+*Internship at Institute of Futuristic Technologies (IOFT)*.
 
 ## 🛠 Technologies Used
 - Java
@@ -8,7 +9,7 @@ Online Examination System is a web-based application developed to conduct exams 
 - JPA
 - JSP
 - MySQL
-- H2 Database (for testing)
+- H2 Database
 - Lombok
 
 ## 📌 Project Description
@@ -27,7 +28,6 @@ The application also provides an auto-resume feature in case of browser crash or
 ## ▶️ How to Run the Project
 1. Clone the repository
    ```bash
-  https://github.com/Sakshigadade12345/onlineeaxminationsystem.git
-
-  ## Author
-  Sakshi Gadade
+   https://github.com/Sakshigadade12345/onlineeaxminationsystem.git
+## 👩‍💻 Author
+Sakshi Gadade
